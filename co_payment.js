@@ -44,13 +44,12 @@
 
 */
 
-window.onload = function () {
+window.addEventListener("load", function () {
       // Retrieve the field/value pairs from the URL
       var formData = location.search.slice(1);
-      formData.replace(/\+/g, " ");
+      formData = formData.replace(/\+/g, " ");
       formData = decodeURIComponent(formData);
       var formFields = formData.split(/[&=]/g);
-
       // Write the field values to the order form
       document.forms.order.elements.orderDate.value = formFields[1];
       document.forms.order.elements.modelName.value = formFields[5];
@@ -61,4 +60,87 @@ window.onload = function () {
       document.forms.order.elements.subtotal.value = formFields[17];
       document.forms.order.elements.salesTax.value = formFields[19];
       document.forms.order.elements.totalCost.value = formFields[21];
+});
+
+
+
+window.onload = function () {
+      document.getElementById("subButton").onclick = runSubmit;
+      document.getElementById("cardName").oninput = validateName;
+      document.getElementById("cardNumber").oninput = validateNumber;
+      document.getElementById("expMonth").onchange = validateMonth;
+      document.getElementById("expYear").onchange = validateYear;
+      document.getElementById("cvc").oninput = validateCVC;
+}
+
+function runSubmit() {
+      validateName();
+      validateCredit();
+      validateNumber();
+      validateMonth();
+      validateYear();
+      validateCVC();
+}
+
+function validateCVC() {
+      var cardCVC = document.getElementById("cvv");
+      var creditCard = document.querySelector('input[name="credit"]:checked').value;
+
+      if (cardCVC.validity.valueMissing) {
+            cardCVC.setCustomValidity("Enter your CVC number");
+      } else if ((creditCard === "amex") && (/^\d{4}$/.test(cardCVC.value) === false)) {
+
+      } else if () {
+
+      } else {
+
+      }
+}
+
+function validateMonth() {
+      var cardMonth = document.getElementById("expMonth");
+      if (cardMonth.selectedIndex === 0) {
+            cardMonth.setCustomValidity("Select the expiration month")
+      } else {
+            cardMonth.setCustomValidity("");
+      }
+}
+
+function validateYear() {
+      var cardYear = document.getElementById("expYear");
+      if (cardYear.selectedIndex === 0) {
+            cardYear.setCustomValidity("Select the expiration year")
+      } else {
+            cardYear.setCustomValidity("");
+      }
+}
+
+function validateNumber() {
+      var cardNumber = document.getElementById("cardNumber");
+      if (cardNumber.validity.valueMissing) {
+            cardNumber.setCustomValidity("Enter your card number as it appears in your card")
+      } else if (cardNumber.validity.patternMismatch) {
+            cardNumber.setCustomValidity("Enter a valid card number")
+      } else {
+            cardNumber.setCustomValidity("");
+      }
+}
+
+function validateCredit() {
+      var creditCard = document.forms.payment.elements.credit[0];
+      if (creditCard.validity.valueMissing) {
+            creditCard.setCustomValidity("Select your credit card")
+      } else {
+            creditCard.setCustomValidity("");
+      }
+}
+
+function validateName() {
+      var cardName = document.getElementById("cardName");
+
+      if (cardName.validity.valueMissing) {
+            cardName.setCustomValidity("Enter your name as it appears on your card");
+      } else {
+            cardName.setCustomValidity("");
+      }
 }
